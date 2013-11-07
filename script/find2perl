@@ -1,5 +1,6 @@
 #! perl
 
+package App::find2perl;
 use strict;
 use vars qw/$statdone/;
 use File::Spec::Functions 'curdir';
