@@ -8,7 +8,7 @@
 use strict;
 use warnings;
 use File::Path 'remove_tree';
-use File::Spec;
+use File::Spec::Functions qw/catfile catdir curdir/;
 use File::Temp qw/mktemp tempdir/;
 use Test::More;
 
@@ -59,7 +59,7 @@ my @test_files =
     );
 # make some files to search
 for my $spec (@test_files) {
-    my $file = File::Spec->catfile($tmpdir, split '/', $spec->{name});
+    my $file = catfile($tmpdir, split '/', $spec->{name});
     my $type = $spec->{type} || "f";
     if ($type eq "f") {
         open my $fh, ">", $file
@@ -76,12 +76,12 @@ for my $spec (@test_files) {
             or die "Cannot create test directory $file: $!";
     }
     elsif ($type eq "l") {
-        my $target = File::Spec->catfile($tmpdir, split '/', $spec->{target});
+        my $target = catfile($tmpdir, split '/', $spec->{target});
         link $target, $file
             or die "Cannot create test link $file: $!";
     }
     elsif ($type eq "s") {
-        my $target = File::Spec->catfile($tmpdir, split '/', $spec->{target});
+        my $target = catfile($tmpdir, split '/', $spec->{target});
         symlink $target, $file
             or die "Cannot create test symlink $file: $!";
     }
@@ -149,7 +149,7 @@ my @testcases =
         },
     );
 
-my $find2perl = File::Spec->catfile(File::Spec->curdir(), qw/blib script find2perl/);
+my $find2perl = catfile(curdir(), qw/blib script find2perl/);
 our $TODO;
 plan(tests => scalar @testcases);
 for my $test (@testcases) {
