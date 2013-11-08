@@ -12,7 +12,7 @@ use File::Spec;
 use File::Temp qw/mktemp tempdir/;
 use Test::More;
 
-use Devel::FindPerl qw/find_perl_interpreter/;
+use Devel::FindPerl 0.009 qw/find_perl_interpreter/;
 use IPC::Open2;
 
 # add more platforms if you feel like it, but make sure the
@@ -214,13 +214,15 @@ for my $test (@testcases) {
 
 END {
     remove_tree($tmpdir);
+    remove_tree($script);
 }
 
 sub runperl {
 	my %args = @_;
-	my $perl = find_perl_interpreter();
-	my @args = ($perl, ($args{progfile} ? $args{progfile} : ()), @{ $args{args} || [] });
-	my $pid = open2(my ($in, $out), @args);
+	my @args = find_perl_interpreter();
+	push @args, $args{progfile} if $args{progfile};
+	push @args, @{ $args{args} } if $args{args};
+	my $pid = open2(my ($in, $out), @args) or die "Can't open2: $!";
 	binmode $in, ':crlf' if $^O eq 'MSWin32';
 	my $ret = do { local $/; <$in> };
 	waitpid $pid, 0;
