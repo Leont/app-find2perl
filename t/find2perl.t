@@ -19,7 +19,7 @@ use IPC::Open2;
 # tests below are portable to the find(1) for any new platform,
 # or that they skip on that platform
 $^O =~ /^(?:linux|\w+bsd|darwin)$/
-    or skip_all("Need something vaguely POSIX");
+    or plan(skip_all => "Need something vaguely POSIX");
 
 my $VERBOSE = grep $_ eq '-v', @ARGV;
 
