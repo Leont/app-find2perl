@@ -2,6 +2,7 @@ Revision history for App-find2perl
 
 {{$NEXT}}
           Don't try to delete nonexistent files
+          Run on all unixy systems
 
 1.000     2013-12-04 00:33:56 Europe/Amsterdam
           Fixup provides field
