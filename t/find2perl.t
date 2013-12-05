@@ -222,8 +222,8 @@ for my $test (@testcases) {
 }
 
 END {
-    remove_tree($tmpdir);
-    remove_tree($script);
+    remove_tree($tmpdir) if defined $tmpdir;
+    remove_tree($script) if defined $script;
 }
 
 sub runperl {
