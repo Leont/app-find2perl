@@ -1,6 +1,7 @@
 Revision history for App-find2perl
 
 {{$NEXT}}
+          Add dummy module App::find2perl
 
 1.003     2014-01-30 01:35:16CET+0100 Europe/Amsterdam
           Avoid using a less sane find(1)
