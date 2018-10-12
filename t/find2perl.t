@@ -52,11 +52,13 @@ my @test_files =
     (
         { name => "abc" },
         { name => "acc", mtime => time() - HOUR * 48 },
+        { name => "adc", atime => time() - HOUR * 2 },
         { name => "ac", content => "x" x 10 },
         { name => "somedir", type => "d" },
         { name => "link", type => "l", target => "abc" },
         { name => "symlink", type => "s", target => "brokenlink" },
     );
+
 # make some files to search
 for my $spec (@test_files) {
     my $file = catfile($tmpdir, split '/', $spec->{name});
@@ -137,6 +139,13 @@ my @testcases =
             args => [ "-mtime", "-1" ],
         },
         {
+            args => [ "-amin", "+118" ],
+            expect => [ "adc" ],
+        },
+        {
+            args => [ "-amin", "-118" ],
+        },
+        {
             args => [ "-size", "10c" ],
             expect => [ "ac" ],
         },
@@ -151,7 +160,13 @@ my @testcases =
 
 plan(tests => 1 + 4 * @testcases);
 
-my $find2perl = catfile(curdir(), qw/blib script find2perl/);
+my @path = qw/blib script find2perl/;
+my $find2perl = catfile(curdir(), @path);
+unless (-e $find2perl) {
+    shift @path;  # Run test when not building.
+    $find2perl = catfile(curdir(), @path);
+}
+
 ok (-x $find2perl, "find2perl exists");
 our $TODO;
 
