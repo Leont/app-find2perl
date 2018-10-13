@@ -56,11 +56,12 @@ my @test_files =
         { name => "ac", content => "x" x 10 },
         { name => "somedir", type => "d" },
         { name => "link", type => "l", target => "abc" },
-
-# Comment out, since trying to create this symlink dies:
-#        { name => "symlink", type => "s", target => "brokenlink" },
-
+        { name => "symlink", type => "s", target => "brokenlink" },
     );
+
+# MSYS implements symlink() by copying files and will die() file does
+# not exist.
+pop @test_files if $^O eq 'msys';
 
 # make some files to search
 for my $spec (@test_files) {
