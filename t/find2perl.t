@@ -59,6 +59,10 @@ my @test_files =
         { name => "symlink", type => "s", target => "brokenlink" },
     );
 
+# MSYS implements symlink() by copying files and will die() file does
+# not exist.
+pop @test_files if $^O eq 'msys';
+
 # make some files to search
 for my $spec (@test_files) {
     my $file = catfile($tmpdir, split '/', $spec->{name});
